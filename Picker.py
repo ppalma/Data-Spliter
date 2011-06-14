@@ -6,7 +6,7 @@
 #----------------------------------------------------------------------------
 
 from ftplib import FTP
-
+import datetime
 
 class Picker:
 	def __init__(self):
@@ -15,7 +15,7 @@ class Picker:
 		self.toDate = None
 		self.stations = None
 		self.connected = False
-
+		self.format = "%a %b %d %H:%M:%S %Y"
 		print "init Picker"
 
 	def Connect(self,addr='',user='',passwd=''):
@@ -31,9 +31,11 @@ class Picker:
 			print "Disconnected"
 
 	def SetFromDate(self,yy='',mm='',dd='',h='',m='',s=''):
-		self.fromDate = "%s/%s/%s %s:%s:%s"%(yy,mm,dd,h,m,s)
+		self.fromDate = datetime.datetime(yy,mm,dd,h,m,s);
+		s = self.fromDate.strftime(self.format)
+	#	print 'strftime:', s
 
 	def SetToDate(self,yy='',mm='',dd='',h='',m='',s=''):
-		self.toDate = "%s/%s/%s %s:%s:%s"%(yy,mm,dd,h,m,s)
+		self.toDate = datetime.datetime(yy,mm,dd,h,m,s);
 
 		
