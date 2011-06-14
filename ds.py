@@ -118,7 +118,33 @@ def on_spinbuttonToTimem_value_changed(spin):
 	p.toDate.second
 	)
 
+def on_notebook1_change_current_page(nbook,offset):
+	print offset
 
+
+def on_buttonSetupRefresh_clicked(btn):
+	config.read('ds.cfg')
+
+	entryFtpAddr.set_text(config.get('FTP', 'address'))
+	entryFtpUser.set_text(config.get('FTP', 'user'))
+	entryFtpPwd.set_text(config.get('FTP', 'passwd'))
+	filechooserbutton.set_filename((config.get('FOLDER', 'output')))
+def on_filechooserbutton_file_set(fbtn):
+	print fbtn.get_filename()
+def on_buttonSetupSave_clicked(btn):
+#	config.add_section('FTP')
+	config.set('FTP','address', entryFtpAddr.get_text())
+	config.set('FTP','user', entryFtpUser.get_text())
+	config.set('FTP','passwd', entryFtpPwd.get_text())
+	
+#	config.add_section('FOLDER')
+	config.set('FOLDER','output', filechooserbutton.get_filename())
+
+
+
+	with open('ds.cfg', 'wb') as configfile:
+    		config.write(configfile)
+	
 widgetTree = gtk.glade.XML("ds.glade")
 dic = { 
 	"ConnectClicked" : ConnectClicked,
@@ -131,9 +157,17 @@ dic = {
 	"on_calendarTo_day_selected" : on_calendarTo_day_selected,
 	"on_spinbuttonToTimeh_value_changed" : on_spinbuttonToTimeh_value_changed,
 	"on_spinbuttonToTimem_value_changed" : on_spinbuttonToTimem_value_changed,
+
+	"on_buttonSetupRefresh_clicked" :on_buttonSetupRefresh_clicked,
+	"on_buttonSetupSave_clicked" :on_buttonSetupSave_clicked,
+	"on_filechooserbutton_file_set": on_filechooserbutton_file_set,
 ##	"":,
 }	
 spinbuttonToTimeh = widgetTree.get_widget('spinbuttonToTimeh')
 spinbuttonToTimem = widgetTree.get_widget('spinbuttonToTimem')
+entryFtpAddr = widgetTree.get_widget('entryFtpAddr')
+entryFtpUser = widgetTree.get_widget('entryFtpUser')
+entryFtpPwd = widgetTree.get_widget('entryFtpPwd')
+filechooserbutton = widgetTree.get_widget('filechooserbutton')
 widgetTree.signal_autoconnect (dic)   
 gtk.main()
