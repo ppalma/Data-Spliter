@@ -11,8 +11,8 @@ import datetime
 class Picker:
 	def __init__(self):
 		self.ftp = None
-		self.fromDate = None
-		self.toDate = None
+		self.fromDate = datetime.datetime.now()
+		self.toDate = datetime.datetime.now()
 		self.stations = None
 		self.connected = False
 		self.format = "%a %b %d %H:%M:%S %Y"
@@ -30,12 +30,12 @@ class Picker:
 			connected = False	
 			print "Disconnected"
 
-	def SetFromDate(self,yy='',mm='',dd='',h='',m='',s=''):
+	def SetFromDate(self,yy=0,mm=0,dd=0,h=0,m=0,s=0):
 		self.fromDate = datetime.datetime(yy,mm,dd,h,m,s);
-		s = self.fromDate.strftime(self.format)
-	#	print 'strftime:', s
+		print self.fromDate
 
-	def SetToDate(self,yy='',mm='',dd='',h='',m='',s=''):
+	def SetToDate(self,yy=0,mm=0,dd=0,h=0,m=0,s=0):
+
 		self.toDate = datetime.datetime(yy,mm,dd,h,m,s);
 
 		

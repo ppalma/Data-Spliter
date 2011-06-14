@@ -27,10 +27,6 @@ PASSWD = config.get('FTP', 'passwd')
 def DestroyFunction(obj):
         gtk.main_quit()  
 
-def FromDaySelected(cal):
-	year, month, day = cal.get_date()
-	p.SetFromDate(year, month+1 ,day,0,00,0)
-	print p.fromDate
 def ConnectClicked(widget,data=None):
 	print "%s" % (("Desconnecting", "Try to connect")[widget.get_active()])
 	
@@ -61,13 +57,48 @@ def ConnectClicked(widget,data=None):
 	#	ftp.quit()
 #		widget.set_label("Disconected")
 
+def on_calendarFrom_day_selected(cal):
+	year, month, day = cal.get_date()
+	p.SetFromDate(
+		year,
+		month+1,
+		day,
+		p.fromDate.hour  ,
+		p.fromDate.minute,
+		p.fromDate.second
+	)
 	
-
+def on_spinbuttonFromTimeh_value_changed(spin): 
+	p.SetFromDate(
+		p.fromDate.year,
+		p.fromDate.month,
+		p.fromDate.day,
+		spin.get_value(),
+		p.fromDate.minute,
+		p.fromDate.second
+	)
+def on_spinbuttonFromTimem_value_changed(spin):
+	p.SetFromDate(
+		p.fromDate.year,
+		p.fromDate.month,
+		p.fromDate.day,
+		p.fromDate.hour,
+		spin.get_value(),
+		p.fromDate.second
+	)
 widgetTree = gtk.glade.XML("ds.glade")
 dic = { 
-	"FromDaySelected" : FromDaySelected,
 	"ConnectClicked" : ConnectClicked,
-	"on_window1_destroy" : DestroyFunction
+	"on_window1_destroy" : DestroyFunction,
+
+	"on_calendarFrom_day_selected" : on_calendarFrom_day_selected,
+	"on_spinbuttonFromTimeh_value_changed" : on_spinbuttonFromTimeh_value_changed,
+	"on_spinbuttonFromTimem_value_changed" : on_spinbuttonFromTimem_value_changed,
+
+#	"on_calendarTo_day_selected" : on_calendarTo_day_selected,
+#	"on_spinbuttonToTimeh_value_changed" : on_spinbuttonToTimeh_value_changed,
+#	"on_spinbuttonToTimem_value_changed" : on_spinbuttonToTimem_value_changed,
+##	"":,
 }	
 widgetTree.signal_autoconnect (dic)   
 gtk.main()

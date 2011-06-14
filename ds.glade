@@ -116,9 +116,10 @@
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x25CF;</property>
                         <property name="adjustment">0 0 23 1 10 10</property>
-                        <signal name="change_value" handler="on_spinbuttonFromTimeh_change_value"/>
+                        <signal name="value_changed" handler="on_spinbuttonFromTimeh_value_changed"/>
                       </widget>
                       <packing>
+                        <property name="padding">1</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -128,7 +129,7 @@
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x25CF;</property>
                         <property name="adjustment">0 0 59 1 10 10</property>
-                        <signal name="change_value" handler="on_spinbuttonFromTimem_change_value"/>
+                        <signal name="value_changed" handler="on_spinbuttonFromTimem_value_changed"/>
                       </widget>
                       <packing>
                         <property name="position">2</property>
@@ -163,7 +164,7 @@
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x25CF;</property>
                         <property name="adjustment">0 0 23 1 10 10</property>
-                        <signal name="change_value" handler="on_spinbuttonToTimeh_change_value"/>
+                        <signal name="value_changed" handler="on_spinbuttonToTimeh_value_changed"/>
                       </widget>
                       <packing>
                         <property name="position">1</property>
@@ -175,7 +176,7 @@
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x25CF;</property>
                         <property name="adjustment">0 0 59 1 10 10</property>
-                        <signal name="change_value" handler="on_spinbuttonToTimem_change_value"/>
+                        <signal name="value_changed" handler="on_spinbuttonToTimem_value_changed"/>
                       </widget>
                       <packing>
                         <property name="position">2</property>
