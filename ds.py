@@ -67,6 +67,16 @@ def on_calendarFrom_day_selected(cal):
 		p.fromDate.minute,
 		p.fromDate.second
 	)
+def on_calendarTo_day_selected(cal):
+	year, month, day = cal.get_date()
+        p.SetToDate(
+                year,
+                month+1,
+                day,
+                p.fromDate.hour  ,
+                p.fromDate.minute,
+                p.fromDate.second
+        )
 	
 def on_spinbuttonFromTimeh_value_changed(spin): 
 	p.SetFromDate(
@@ -77,6 +87,7 @@ def on_spinbuttonFromTimeh_value_changed(spin):
 		p.fromDate.minute,
 		p.fromDate.second
 	)
+	spinbuttonToTimeh.set_range(spin.get_value(),23)
 def on_spinbuttonFromTimem_value_changed(spin):
 	p.SetFromDate(
 		p.fromDate.year,
@@ -86,6 +97,28 @@ def on_spinbuttonFromTimem_value_changed(spin):
 		spin.get_value(),
 		p.fromDate.second
 	)
+	spinbuttonToTimem.set_range(spin.get_value(),59)
+def on_spinbuttonToTimeh_value_changed(spin): 
+	p.SetToDate(
+	p.toDate.year,
+	p.toDate.month,
+	p.toDate.day,
+	spin.get_value(),
+	p.toDate.minute,
+	p.toDate.second
+	)
+
+def on_spinbuttonToTimem_value_changed(spin):
+	p.SetToDate(
+	p.toDate.year,
+	p.toDate.month,
+	p.toDate.day,
+	p.toDate.hour,
+	spin.get_value(),
+	p.toDate.second
+	)
+
+
 widgetTree = gtk.glade.XML("ds.glade")
 dic = { 
 	"ConnectClicked" : ConnectClicked,
@@ -95,10 +128,12 @@ dic = {
 	"on_spinbuttonFromTimeh_value_changed" : on_spinbuttonFromTimeh_value_changed,
 	"on_spinbuttonFromTimem_value_changed" : on_spinbuttonFromTimem_value_changed,
 
-#	"on_calendarTo_day_selected" : on_calendarTo_day_selected,
-#	"on_spinbuttonToTimeh_value_changed" : on_spinbuttonToTimeh_value_changed,
-#	"on_spinbuttonToTimem_value_changed" : on_spinbuttonToTimem_value_changed,
+	"on_calendarTo_day_selected" : on_calendarTo_day_selected,
+	"on_spinbuttonToTimeh_value_changed" : on_spinbuttonToTimeh_value_changed,
+	"on_spinbuttonToTimem_value_changed" : on_spinbuttonToTimem_value_changed,
 ##	"":,
 }	
+spinbuttonToTimeh = widgetTree.get_widget('spinbuttonToTimeh')
+spinbuttonToTimem = widgetTree.get_widget('spinbuttonToTimem')
 widgetTree.signal_autoconnect (dic)   
 gtk.main()
