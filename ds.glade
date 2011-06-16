@@ -19,7 +19,8 @@
           <widget class="GtkNotebook" id="notebook1">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <signal name="change_current_page" handler="on_notebook1_change_current_page"/>
+            <property name="has_focus">True</property>
+            <signal name="switch_page" handler="on_notebook1_switch_page"/>
             <child>
               <widget class="GtkTable" id="table1">
                 <property name="visible">True</property>
@@ -85,21 +86,6 @@
                   </packing>
                 </child>
                 <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
                   <widget class="GtkHBox" id="hbox2">
                     <property name="visible">True</property>
                     <child>
@@ -116,7 +102,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x25CF;</property>
-                        <property name="adjustment">0 0 23 1 10 10</property>
+                        <property name="adjustment">0 0 23 1 10 0</property>
                         <signal name="value_changed" handler="on_spinbuttonFromTimeh_value_changed"/>
                       </widget>
                       <packing>
@@ -129,7 +115,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x25CF;</property>
-                        <property name="adjustment">0 0 59 1 10 10</property>
+                        <property name="adjustment">0 0 59 1 10 0</property>
                         <signal name="value_changed" handler="on_spinbuttonFromTimem_value_changed"/>
                       </widget>
                       <packing>
@@ -164,7 +150,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x25CF;</property>
-                        <property name="adjustment">0 0 23 1 10 10</property>
+                        <property name="adjustment">0 0 23 1 10 0</property>
                         <signal name="value_changed" handler="on_spinbuttonToTimeh_value_changed"/>
                       </widget>
                       <packing>
@@ -176,7 +162,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x25CF;</property>
-                        <property name="adjustment">0 0 59 1 10 10</property>
+                        <property name="adjustment">0 0 59 1 10 0</property>
                         <signal name="value_changed" handler="on_spinbuttonToTimem_value_changed"/>
                       </widget>
                       <packing>
@@ -193,6 +179,28 @@
                     <property name="top_attach">2</property>
                     <property name="bottom_attach">3</property>
                   </packing>
+                </child>
+                <child>
+                  <widget class="GtkTreeView" id="treeviewStations">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                  </widget>
+                  <packing>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
                 </child>
               </widget>
             </child>
@@ -282,6 +290,25 @@
                           </widget>
                           <packing>
                             <property name="position">5</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="label9">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Folder</property>
+                          </widget>
+                          <packing>
+                            <property name="position">6</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkEntry" id="entryFtpFolder">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="invisible_char">&#x25CF;</property>
+                          </widget>
+                          <packing>
+                            <property name="position">7</property>
                           </packing>
                         </child>
                       </widget>

@@ -23,7 +23,7 @@ config.read('ds.cfg')
 ADDR = config.get('FTP', 'address')
 USER = config.get('FTP', 'user')
 PASSWD = config.get('FTP', 'passwd')
-
+FOLDER = config.get('FTP', 'folder')
 def DestroyFunction(obj):
         gtk.main_quit()  
 
@@ -31,7 +31,7 @@ def ConnectClicked(widget,data=None):
 	print "%s" % (("Desconnecting", "Try to connect")[widget.get_active()])
 	
 	if widget.get_active():
-		p.Connect(ADDR,USER,PASSWD)
+		p.Connect(ADDR,USER,PASSWD,FOLDER)
 	else:
 		p.Disconnect()
 #	if widget.get_active():
@@ -128,7 +128,13 @@ def on_buttonSetupRefresh_clicked(btn):
 	entryFtpAddr.set_text(config.get('FTP', 'address'))
 	entryFtpUser.set_text(config.get('FTP', 'user'))
 	entryFtpPwd.set_text(config.get('FTP', 'passwd'))
+	entryFtpFolder.set_text(config.get('FTP', 'folder'))
 	filechooserbutton.set_filename((config.get('FOLDER', 'output')))
+	ADDR = config.get('FTP', 'address')
+	USER = config.get('FTP', 'user')
+	PASSWD = config.get('FTP', 'passwd')
+	FOLDER = config.get('FTP', 'folder')
+
 def on_filechooserbutton_file_set(fbtn):
 	print fbtn.get_filename()
 def on_buttonSetupSave_clicked(btn):
@@ -136,6 +142,7 @@ def on_buttonSetupSave_clicked(btn):
 	config.set('FTP','address', entryFtpAddr.get_text())
 	config.set('FTP','user', entryFtpUser.get_text())
 	config.set('FTP','passwd', entryFtpPwd.get_text())
+	config.set('FTP','folder', entryFtpFolder.get_text())
 	
 #	config.add_section('FOLDER')
 	config.set('FOLDER','output', filechooserbutton.get_filename())
@@ -144,7 +151,9 @@ def on_buttonSetupSave_clicked(btn):
 
 	with open('ds.cfg', 'wb') as configfile:
     		config.write(configfile)
-	
+def on_notebook1_switch_page(notebook, page, page_num):
+	if page_num == 1:
+		on_buttonSetupRefresh_clicked(None)
 widgetTree = gtk.glade.XML("ds.glade")
 dic = { 
 	"ConnectClicked" : ConnectClicked,
@@ -161,6 +170,7 @@ dic = {
 	"on_buttonSetupRefresh_clicked" :on_buttonSetupRefresh_clicked,
 	"on_buttonSetupSave_clicked" :on_buttonSetupSave_clicked,
 	"on_filechooserbutton_file_set": on_filechooserbutton_file_set,
+	"on_notebook1_switch_page": on_notebook1_switch_page
 ##	"":,
 }	
 spinbuttonToTimeh = widgetTree.get_widget('spinbuttonToTimeh')
@@ -168,6 +178,10 @@ spinbuttonToTimem = widgetTree.get_widget('spinbuttonToTimem')
 entryFtpAddr = widgetTree.get_widget('entryFtpAddr')
 entryFtpUser = widgetTree.get_widget('entryFtpUser')
 entryFtpPwd = widgetTree.get_widget('entryFtpPwd')
+entryFtpFolder = widgetTree.get_widget('entryFtpFolder')
+
 filechooserbutton = widgetTree.get_widget('filechooserbutton')
-widgetTree.signal_autoconnect (dic)   
+widgetTree.signal_autoconnect (dic)  
+
+p.GetFiles() 
 gtk.main()
