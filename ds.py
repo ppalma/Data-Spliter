@@ -32,31 +32,29 @@ def ConnectClicked(widget,data=None):
 	
 	if widget.get_active():
 		p.Connect(ADDR,USER,PASSWD,FOLDER)
+		
+
+		stations = gtk.TreeViewColumn()		
+		stations.set_title("Stations")
+		cell = gtk.CellRendererText()
+		stations.pack_start(cell, True)
+		stations.add_attribute(cell, "text", 0)
+		treestore = gtk.TreeStore(str)
+		
+#		items = p.GetFiles(FOLDER)
+		for k in items.keys():
+			print items[k]
+			it = treestore.append(None, [k])
+			for i in items[k]:
+			        treestore.append(it, [i])
+
+		treeviewStations.append_column(stations)
+ 		treeviewStations.set_model(treestore)
 	else:
 		p.Disconnect()
-#	if widget.get_active():
-#		ftp = FTP("192.168.0.103", "user", "coy")
-#		ftp.cwd('/home/user/Descargas')
-#		ftp.retrlines('LIST')	
-		
-#		print ftp.nlst("*g");
-
-#		filelist = ftp.nlst("*g")
-		
-#		for hostfile in filelist:
-#			lines = []
-#			ftp.retrlines("RETR "+hostfile, lines.append)
-#			pcfile = open("%s/%s"% ('./',hostfile), 'w')
-#			for line in lines:
-#                        	pcfile.write(line+"\n")
-#	                pcfile.close()
-#			print ("Done : %s")%hostfile
-#		print "Connected"
-#		widget.set_label("Connected")
-#	else:
-	#	ftp.quit()
-#		widget.set_label("Disconected")
-
+def ReadFolder():
+	alld = {'': {}}
+	
 def on_calendarFrom_day_selected(cal):
 	year, month, day = cal.get_date()
 	p.SetFromDate(
@@ -148,6 +146,14 @@ def on_buttonSetupSave_clicked(btn):
 	config.set('FOLDER','output', filechooserbutton.get_filename())
 
 
+#	config.add_section('FTPDIR')
+	
+	config.set('FTPDIR','Fiordo',['Ayse','Chac','coyq'])
+	config.set('FTPDIR','Hudson',['Hud','Malva'])
+	config.set('FTPDIR','Melimoyu',['Junt','Meli','Puyu','Rmb_'])
+
+
+
 
 	with open('ds.cfg', 'wb') as configfile:
     		config.write(configfile)
@@ -181,7 +187,8 @@ entryFtpPwd = widgetTree.get_widget('entryFtpPwd')
 entryFtpFolder = widgetTree.get_widget('entryFtpFolder')
 
 filechooserbutton = widgetTree.get_widget('filechooserbutton')
+treeviewStations = widgetTree.get_widget('treeviewStations')
+
 widgetTree.signal_autoconnect (dic)  
 
-p.GetFiles() 
 gtk.main()

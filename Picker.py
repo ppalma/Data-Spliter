@@ -7,6 +7,7 @@
 
 from ftplib import FTP
 import datetime
+from ftptool import FTPHost
 
 class Picker:
 	def __init__(self):
@@ -21,17 +22,18 @@ class Picker:
 
 	def Connect(self,addr='',user='',passwd='',folder=''):
 		if self.ftp == None:
-			ftp = FTP(addr,user,passwd)
+			self.ftp = FTP(addr,user,passwd)
+			self.addr= addr
+			self.user = user
+			self.passwd = passwd	
 			connected = True
-			ftp.cwd(folder)
-			files = []
-			files = ftp.retrlines('LIST')
-
+			self.folder=folder
+			self.ftp.cwd(folder)
 
 			print "Connected"
 	def Disconnect(self):
 		if self.ftp <> None:
-			ftp.quit()
+			self.ftp.quit()
 			connected = False	
 			print "Disconnected"
 
@@ -41,29 +43,26 @@ class Picker:
 	def SetToDate(self,yy=0,mm=0,dd=0,h=0,m=0,s=0):
 		self.toDate = datetime.datetime(yy,mm,dd,h,m,s);
 
-	def GetFiles(self):
-		Huds = ['20110407_1200huds0e.gcf','20110407_1200huds0n.gcf','20110407_1200huds0z.gcf']
-		Malva = ['20110331_1500malvae.gcf','20110331_1500malvan.gcf','20110331_1500malvaz.gcf']
-		Meli = ['20110517_0800e.gcf','20110517_0800n.gcf','20110517_0800z.gcf']
+	def GetFiles(self, directory):
+		
+		a_host = FTPHost.connect(self.addr,user=self.user,password=self.passwd)
+		alld = {'': {}}
+		print self.folder
+		x=[]
+		self.ftp.dir('-d','*/',lambda L:x.append(L.split()[-1]))
+		print x
+#		for (dirname, subdirs, files) in a_host.walk(self.folder):
+#			d = alld
+#			dirname = dirname[len(self.folder):]
+#			print dirname
+#			for subd in dirname.split('/'):
+#				based = d
+#				d = d[subd]
+#			if subdirs:
+#				for dn in subdirs:
+#					d[dn] = {}
+#			else:
+#				based[subd] = files
+		alld['':x]
+		return alld['']
 			
-		Hudson = {}
-		Hudson['Malva'] = Malva
-		Hudson['Huds'] = Huds
-		
-		Melimoyu = {}
-		Melimoyu['Meli'] = Meli
-
-		volcan = {}
-		volcan['Hudson'] = Hudson
-		volcan['Melimoyu'] = Melimoyu
-	#	print volcan['Hudson']['Malva']
-	#	print volcan['Melimoyu']
-		self.printr(volcan)
-
-	def printr(self,d):
-		if type(d) == type({}):
-			print 'ii %s'%(d[d.keys()[0]])
-			self.printr(d[d.keys()[0]])		
-		if type(d) == type([]):
-			print 'list'
-		
