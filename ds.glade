@@ -147,9 +147,10 @@
           </packing>
         </child>
         <child>
-          <widget class="GtkNotebook" id="notebook1">
+          <widget class="GtkNotebook" id="notebook">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <signal name="switch_page" handler="on_notebook_switch_page"/>
             <child>
               <widget class="GtkTable" id="table1">
                 <property name="visible">True</property>
@@ -243,28 +244,9 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkTable" id="table3">
+              <widget class="GtkVBox" id="vbox">
                 <property name="visible">True</property>
-                <property name="n_rows">3</property>
-                <property name="n_columns">3</property>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
+                <property name="orientation">vertical</property>
                 <child>
                   <placeholder/>
                 </child>
