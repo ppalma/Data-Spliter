@@ -13,9 +13,9 @@ import gtk.glade
 import gnome.ui
 from Picker import Picker
 import ConfigParser
-import sys
+import sys,os
 from time import gmtime, strftime
-
+from socket import *
 
 
 
@@ -103,6 +103,11 @@ def on_notebook_switch_page(notebook, page, page_num):
 
 	if page_num == 1:
 		entryStartTime.set_text(strftime("%Y%m%d%H%M%S", gmtime()))
+		comboboxDataFormat = wTree.get_widget('comboboxDataFormat')
+		comboboxOutputFormat = wTree.get_widget('comboboxOutputFormat')
+		comboboxDataFormat.set_active(0)
+		comboboxOutputFormat.set_active(0)
+
 	if page_num == 2:
 		config.read(CONFIG_FILE)
 		read_config()		
@@ -133,7 +138,7 @@ def on_buttonExecute_clicked(widget):
 	spinbuttonTimeoutSeconds = wTree.get_widget('spinbuttonTimeoutSeconds')
 
 	comboboxOutputFormat = wTree.get_widget('comboboxOutputFormat')
-	tmp ='1'
+
 	output = 'waveman2disk.d'
 	file = open(output,'w')
 	
@@ -148,14 +153,20 @@ def on_buttonExecute_clicked(widget):
 	file.write('OutDir %s\n'% entryOutDir.get_text())
 	file.write('OutputFormat %s\n'% comboboxOutputFormat.get_active_text())
 	file.write('WaveServer %s\n'%entryWaveServer.get_text() )
-	file.write('TiemOutSeconds %d\n'% spinbuttonTimeoutSeconds.get_value())
+	file.write('TimeoutSeconds %d\n'% spinbuttonTimeoutSeconds.get_value())
 	file.write('MaxTraces %d\n'%spinbuttonMaxTraces.get_value() )
 	file.write('TraceBufferLen %d\n'%spinbuttonTraceBufferLen.get_value())
 	file.write('GapThresh %s\n'%spinbuttonGapThresh.get_value())
 	file.write('MinDuration %d\n'%spinbuttonMinDuration.get_value())
 	file.close()
-
-
+	os.system('scp waveman2disk.d user@172.16.5.51:/usr/local/Earthworm/Run_OVC/Params')
+	
+	config.read(CONFIG_FILE)
+	s = socket(AF_INET, SOCK_STREAM) 
+	s.connect((config.get('WAVEMAN2DISK','server'), int(config.get('WAVEMAN2DISK','port'))))
+	s.send('waveman2disk')
+	data = s.recv(1024)
+	print '(%s)'%data
 wTree = gtk.glade.XML("ds.glade")
 config = ConfigParser.ConfigParser()
 

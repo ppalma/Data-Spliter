@@ -1,4 +1,4 @@
-StartTime 20110704164011
+StartTime 20110705201014
 Duration 3600
 DataFormat sac
 LogFile 0
@@ -7,7 +7,7 @@ SaveSCNL * * * *
 OutDir /home/user/event/INTERACTIVE
 OutputFormat intel
 WaveServer 192.168.2.2 16022
-TiemOutSeconds 500
+TimeoutSeconds 500
 MaxTraces 100
 TraceBufferLen 72000
 GapThresh 1.5
