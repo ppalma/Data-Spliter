@@ -1,4 +1,4 @@
-StartTime 20110705201014
+StartTime 20110708151937
 Duration 3600
 DataFormat sac
 LogFile 0

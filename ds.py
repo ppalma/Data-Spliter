@@ -16,7 +16,7 @@ import ConfigParser
 import sys,os
 from time import gmtime, strftime
 from socket import *
-
+import time
 
 
 
@@ -101,15 +101,18 @@ def read_config():
 
 def on_notebook_switch_page(notebook, page, page_num):
 
+	config.read(CONFIG_FILE)
 	if page_num == 1:
 		entryStartTime.set_text(strftime("%Y%m%d%H%M%S", gmtime()))
 		comboboxDataFormat = wTree.get_widget('comboboxDataFormat')
 		comboboxOutputFormat = wTree.get_widget('comboboxOutputFormat')
 		comboboxDataFormat.set_active(0)
 		comboboxOutputFormat.set_active(0)
-
+		
+		for t in config.items('SCNL'):
+			item = {t[0]:t[1]}
+		
 	if page_num == 2:
-		config.read(CONFIG_FILE)
 		read_config()		
 
 def on_checkbuttonLogFile_toggled(widget):
@@ -121,8 +124,8 @@ def on_buttonExecute_clicked(widget):
 	entryStartTime = wTree.get_widget('entryStartTime')
 	spinbuttonDuration = wTree.get_widget('spinbuttonDuration')
 	comboboxDataFormat = wTree.get_widget('comboboxDataFormat')
-	entryLocalDir = wTree.get_widget('entryLocalDir')
-	
+#	entryLocalDir = wTree.get_widget('entryLocalDir')
+	filechooserbuttonLocalDir = wTree.get_widget('filechooserbuttonLocalDir')
 	checkbuttonLogFile = wTree.get_widget('checkbuttonLogFile')
 	
 	entryInputMethod = wTree.get_widget('entryInputMethod')
@@ -159,7 +162,7 @@ def on_buttonExecute_clicked(widget):
 	file.write('GapThresh %s\n'%spinbuttonGapThresh.get_value())
 	file.write('MinDuration %d\n'%spinbuttonMinDuration.get_value())
 	file.close()
-	os.system('scp waveman2disk.d user@172.16.5.51:/usr/local/Earthworm/Run_OVC/Params')
+#	os.system('scp waveman2disk.d user@172.16.5.51:/usr/local/Earthworm/Run_OVC/Params')
 	
 	config.read(CONFIG_FILE)
 	s = socket(AF_INET, SOCK_STREAM) 
@@ -167,6 +170,19 @@ def on_buttonExecute_clicked(widget):
 	s.send('waveman2disk')
 	data = s.recv(1024)
 	print '(%s)'%data
+
+	date = entryStartTime.get_text()
+	remoteFolder = "%s/%s/%s_%s_MAN"%(entryOutDir.get_text(),
+	date[:6],
+	date[:8],
+	date[8:14],
+	)
+	
+	time.sleep(3)	
+	cmd = 'scp -r user@172.16.5.51:%s %s'%(remoteFolder,filechooserbuttonLocalDir.get_current_folder())
+	print cmd
+#	os.system(cmd)
+
 wTree = gtk.glade.XML("ds.glade")
 config = ConfigParser.ConfigParser()
 

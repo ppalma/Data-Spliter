@@ -397,19 +397,6 @@ wfdisc</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkEntry" id="entryLocalDir">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="invisible_char">&#x25CF;</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">3</property>
-                        <property name="bottom_attach">4</property>
-                      </packing>
-                    </child>
-                    <child>
                       <widget class="GtkCheckButton" id="checkbuttonLogFile">
                         <property name="label" translatable="yes">Enable</property>
                         <property name="visible">True</property>
@@ -617,6 +604,21 @@ sparc
                         <property name="right_attach">2</property>
                         <property name="top_attach">16</property>
                         <property name="bottom_attach">17</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkFileChooserButton" id="filechooserbuttonLocalDir">
+                        <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
+                        <property name="create_folders">False</property>
+                        <property name="action">select-folder</property>
+                        <property name="title" translatable="yes">Select A Folder</property>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">3</property>
+                        <property name="bottom_attach">4</property>
                       </packing>
                     </child>
                   </widget>
