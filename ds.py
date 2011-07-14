@@ -16,7 +16,7 @@ import ConfigParser
 import sys,os
 from time import gmtime, strftime
 from socket import *
-import time
+import time,datetime
 
 
 
@@ -103,14 +103,8 @@ def on_notebook_switch_page(notebook, page, page_num):
 
 	config.read(CONFIG_FILE)
 	if page_num == 1:
-		entryStartTime.set_text(strftime("%Y%m%d%H%M%S", gmtime()))
-		comboboxDataFormat = wTree.get_widget('comboboxDataFormat')
-		comboboxOutputFormat = wTree.get_widget('comboboxOutputFormat')
-		comboboxDataFormat.set_active(0)
-		comboboxOutputFormat.set_active(0)
-		
-		for t in config.items('SCNL'):
-			item = {t[0]:t[1]}
+		pass
+#		entryStartTime.set_text(strftime("%Y%m%d%H%M%S", gmtime()))
 		
 	if page_num == 2:
 		read_config()		
@@ -121,8 +115,6 @@ def on_checkbuttonLogFile_toggled(widget):
 #print "%s"%(('Enable','Disable')[widget.toggled()])
 def on_buttonExecute_clicked(widget):
 			
-	entryStartTime = wTree.get_widget('entryStartTime')
-	spinbuttonDuration = wTree.get_widget('spinbuttonDuration')
 	comboboxDataFormat = wTree.get_widget('comboboxDataFormat')
 #	entryLocalDir = wTree.get_widget('entryLocalDir')
 	filechooserbuttonLocalDir = wTree.get_widget('filechooserbuttonLocalDir')
@@ -141,15 +133,16 @@ def on_buttonExecute_clicked(widget):
 	spinbuttonTimeoutSeconds = wTree.get_widget('spinbuttonTimeoutSeconds')
 
 	comboboxOutputFormat = wTree.get_widget('comboboxOutputFormat')
+	
+	fromDate = wTree.get_widget('dateeditFrom')
+	toDate = wTree.get_widget('dateeditTo')
 
 	output = 'waveman2disk.d'
 	file = open(output,'w')
-	
-	file.write('StartTime %s\n'%entryStartTime.get_text())
-	file.write('Duration %d\n'% spinbuttonDuration.get_value() )
+
+	file.write('StartTime %s\n'%strftime("%Y%m%d%H%M%S", time.localtime(fromDate.get_time())) )
+	file.write('Duration %d\n'% abs(fromDate.get_time() - toDate.get_time()) )
 	file.write('DataFormat %s\n'% comboboxDataFormat.get_active_text())
-	
-	
 	file.write('LogFile %s\n'% ('1', '0')[not checkbuttonLogFile.get_active()] )
 	file.write('InputMethod %s\n'% entryInputMethod.get_text() )
 	file.write('SaveSCNL %s\n'% entrySaveSCNL.get_text())
@@ -162,25 +155,26 @@ def on_buttonExecute_clicked(widget):
 	file.write('GapThresh %s\n'%spinbuttonGapThresh.get_value())
 	file.write('MinDuration %d\n'%spinbuttonMinDuration.get_value())
 	file.close()
-#	os.system('scp waveman2disk.d user@172.16.5.51:/usr/local/Earthworm/Run_OVC/Params')
-	
-	config.read(CONFIG_FILE)
-	s = socket(AF_INET, SOCK_STREAM) 
-	s.connect((config.get('WAVEMAN2DISK','server'), int(config.get('WAVEMAN2DISK','port'))))
-	s.send('waveman2disk')
-	data = s.recv(1024)
-	print '(%s)'%data
 
-	date = entryStartTime.get_text()
-	remoteFolder = "%s/%s/%s_%s_MAN"%(entryOutDir.get_text(),
-	date[:6],
-	date[:8],
-	date[8:14],
-	)
+
+#	os.system('scp waveman2disk.d user@172.16.5.51:/usr/local/Earthworm/Run_OVC/Params')
+#	config.read(CONFIG_FILE)
+#	s = socket(AF_INET, SOCK_STREAM) 
+#	s.connect((config.get('WAVEMAN2DISK','server'), int(config.get('WAVEMAN2DISK','port'))))
+#	s.send('waveman2disk')
+#	data = s.recv(1024)
+#	print '(%s)'%data
+
+#	date = entryStartTime.get_text()
+#	remoteFolder = "%s/%s/%s_%s_MAN"%(entryOutDir.get_text(),
+#	date[:6],
+#	date[:8],
+#	date[8:14],
+#	)
 	
-	time.sleep(3)	
-	cmd = 'scp -r user@172.16.5.51:%s %s'%(remoteFolder,filechooserbuttonLocalDir.get_current_folder())
-	print cmd
+#	time.sleep(3)	
+#	cmd = 'scp -r user@172.16.5.51:%s %s'%(remoteFolder,filechooserbuttonLocalDir.get_current_folder())
+#	print cmd
 #	os.system(cmd)
 
 wTree = gtk.glade.XML("ds.glade")
@@ -193,12 +187,10 @@ dic = 	{
 	'on_checkbuttonLogFile_toggled':on_checkbuttonLogFile_toggled,
 	}
 		
-entryStartTime = wTree.get_widget('entryStartTime')
-spinbuttonDuration = wTree.get_widget('spinbuttonDuration')
-comboboxDataFormat = wTree.get_widget('comboboxDataFormat')
-entryLocalDir = wTree.get_widget('entryLocalDir')
- #= wTree.get_widget('')
-
+wTree.get_widget('dateeditFrom').set_time( 0 )
+wTree.get_widget('dateeditTo').set_time( 0 )
+wTree.get_widget('comboboxDataFormat').set_active( 0 )
+wTree.get_widget('comboboxOutputFormat').set_active( 0 )
 
 
 wTree.signal_autoconnect( dic )

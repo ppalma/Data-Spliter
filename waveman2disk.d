@@ -1,4 +1,4 @@
-StartTime 20110708151937
+StartTime 20110713000000
 Duration 3600
 DataFormat sac
 LogFile 0
@@ -10,5 +10,5 @@ WaveServer 192.168.2.2 16022
 TimeoutSeconds 500
 MaxTraces 100
 TraceBufferLen 72000
-GapThresh 1.5
+GapThresh 0.5
 MinDuration 31
