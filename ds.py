@@ -137,7 +137,7 @@ def on_buttonExecute_clicked(widget):
 	fromDate = wTree.get_widget('dateeditFrom')
 	toDate = wTree.get_widget('dateeditTo')
 
-	output = 'waveman2disk.d'
+	output = 'waveman2disk2.d'
 	file = open(output,'w')
 
 	file.write('StartTime %s\n'%strftime("%Y%m%d%H%M%S", time.localtime(fromDate.get_time())) )
@@ -157,25 +157,25 @@ def on_buttonExecute_clicked(widget):
 	file.close()
 
 
-#	os.system('scp waveman2disk.d user@172.16.5.51:/usr/local/Earthworm/Run_OVC/Params')
-#	config.read(CONFIG_FILE)
-#	s = socket(AF_INET, SOCK_STREAM) 
-#	s.connect((config.get('WAVEMAN2DISK','server'), int(config.get('WAVEMAN2DISK','port'))))
-#	s.send('waveman2disk')
-#	data = s.recv(1024)
-#	print '(%s)'%data
+	os.system('scp waveman2disk2.d user@172.16.5.51:/usr/local/Earthworm/Run_OVC/Params')
+	config.read(CONFIG_FILE)
+	s = socket(AF_INET, SOCK_STREAM) 
+	s.connect((config.get('WAVEMAN2DISK','server'), int(config.get('WAVEMAN2DISK','port'))))
+	s.send('waveman2disk2')
+	data = s.recv(1024)
+	print '(%s)'%data
 
-#	date = entryStartTime.get_text()
-#	remoteFolder = "%s/%s/%s_%s_MAN"%(entryOutDir.get_text(),
-#	date[:6],
-#	date[:8],
-#	date[8:14],
-#	)
+	date = strftime("%Y%m%d%H%M%S", time.localtime(fromDate.get_time())) 
+	remoteFolder = "%s/%s/%s_%s_MAN"%(entryOutDir.get_text(),
+	date[:6],
+	date[:8],
+	date[8:14],
+	)
 	
-#	time.sleep(3)	
-#	cmd = 'scp -r user@172.16.5.51:%s %s'%(remoteFolder,filechooserbuttonLocalDir.get_current_folder())
-#	print cmd
-#	os.system(cmd)
+	time.sleep(5)	
+	cmd = 'scp -r user@172.16.5.51:%s %s'%(remoteFolder,filechooserbuttonLocalDir.get_current_folder())
+	print cmd
+	os.system(cmd)
 
 wTree = gtk.glade.XML("ds.glade")
 config = ConfigParser.ConfigParser()
