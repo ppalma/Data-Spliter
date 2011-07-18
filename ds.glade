@@ -242,6 +242,7 @@
                     <property name="top_attach">2</property>
                     <property name="bottom_attach">3</property>
                     <property name="x_options"></property>
+                    <property name="y_options"></property>
                   </packing>
                 </child>
                 <child>
@@ -375,8 +376,8 @@ wfdisc</property>
                               <widget class="GtkFileChooserButton" id="filechooserbuttonLocalDir">
                                 <property name="visible">True</property>
                                 <property name="orientation">vertical</property>
-                                <property name="action">select-folder</property>
                                 <property name="create_folders">False</property>
+                                <property name="action">select-folder</property>
                                 <property name="title" translatable="yes">Select A Folder</property>
                               </widget>
                               <packing>
@@ -391,6 +392,9 @@ wfdisc</property>
                           </packing>
                         </child>
                       </widget>
+                      <packing>
+                        <property name="y_options"></property>
+                      </packing>
                     </child>
                     <child>
                       <widget class="GtkTable" id="table5">
@@ -695,7 +699,7 @@ sparc
                             <child>
                               <widget class="GtkLabel" id="label20">
                                 <property name="visible">True</property>
-                                <property name="label" translatable="yes">expander</property>
+                                <property name="label" translatable="yes">Advanced</property>
                               </widget>
                               <packing>
                                 <property name="type">label_item</property>
