@@ -99,12 +99,69 @@ def read_config():
 		hbox.pack_end(btnRefresh,False,False,0)			
 		vbox.pack_start(hbox, False, False, 0)
 
+def waveman2disk_init():
+
+	f = open('wave_serverV.d','r')
+	stations = {}
+	tank = []
+	s = {} 
+	for line in f:
+		sline = line.split(' ')
+		if sline[0] == 'Tank':
+		#	s = {sline[1][0:-1]:sline[1][-1]}
+			if s.has_key(sline[1][0:-1]):
+				s[sline[1][0:-1]].append( sline[1][-1] )
+			else:
+				s[sline[1][0:-1]] = [sline[1][-1]]	
+		
+
+	print s
+
+
+
+	
+
+#	stations[sline[5]] = sline[1]	
+#	for l in tank:
+	#	stations[l[4]]=l[0]	
+#		stations[l[0][0:-1]] = l[4]
+
+
+	wTree.get_widget('dateeditFrom').set_time( 0 )
+	wTree.get_widget('dateeditTo').set_time( 0 )
+	wTree.get_widget('comboboxDataFormat').set_active( 0 )
+	wTree.get_widget('comboboxOutputFormat').set_active( 0 )
+	
+	table =   wTree.get_widget('tableLocation')
+	tree = gtk.TreeView()
+
+	tree.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
+
+
+
+	languages = gtk.TreeViewColumn()
+	languages.set_title("Locations")
+
+        cell = gtk.CellRendererText()
+        languages.pack_start(cell, True)
+        languages.add_attribute(cell, "text", 0)
+
+        treestore = gtk.TreeStore(str)
+
+        it = treestore.append(None, ["Hudson"])
+        it = treestore.append(None, ["Melimoyu"])
+        it = treestore.append(None, ["Fiordo"])
+
+        tree.append_column(languages)
+        tree.set_model(treestore)
+	table.attach(tree,0,1,1,2)
+	table.show_all()	
+
 def on_notebook_switch_page(notebook, page, page_num):
 
 	config.read(CONFIG_FILE)
 	if page_num == 1:
-		pass
-#		entryStartTime.set_text(strftime("%Y%m%d%H%M%S", gmtime()))
+		waveman2disk_init()
 		
 	if page_num == 2:
 		read_config()		
@@ -187,11 +244,5 @@ dic = 	{
 	'on_checkbuttonLogFile_toggled':on_checkbuttonLogFile_toggled,
 	}
 		
-wTree.get_widget('dateeditFrom').set_time( 0 )
-wTree.get_widget('dateeditTo').set_time( 0 )
-wTree.get_widget('comboboxDataFormat').set_active( 0 )
-wTree.get_widget('comboboxOutputFormat').set_active( 0 )
-
-
 wTree.signal_autoconnect( dic )
 gtk.main()
