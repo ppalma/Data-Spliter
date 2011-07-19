@@ -103,29 +103,25 @@ def waveman2disk_init():
 
 	f = open('wave_serverV.d','r')
 	stations = {}
-	tank = []
+	locations = {}
 	s = {} 
 	for line in f:
 		sline = line.split(' ')
 		if sline[0] == 'Tank':
-		#	s = {sline[1][0:-1]:sline[1][-1]}
-			if s.has_key(sline[1][0:-1]):
-				s[sline[1][0:-1]].append( sline[1][-1] )
+			location = sline[5]
+			station = sline[1][0:-1]
+			comp = sline[1][-1]
+			print location
+			if not locations.has_key(location):
+				locations[location] = {station:[comp]}	
 			else:
-				s[sline[1][0:-1]] = [sline[1][-1]]	
-		
+				if not locations[location].has_key(station):
+					locations[location] = {station:[comp]}
+				else:	
+					locations[location][station].append(comp)
 
-	print s
 
-
-
-	
-
-#	stations[sline[5]] = sline[1]	
-#	for l in tank:
-	#	stations[l[4]]=l[0]	
-#		stations[l[0][0:-1]] = l[4]
-
+	print locations
 
 	wTree.get_widget('dateeditFrom').set_time( 0 )
 	wTree.get_widget('dateeditTo').set_time( 0 )
