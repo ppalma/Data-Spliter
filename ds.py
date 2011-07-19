@@ -165,9 +165,11 @@ def on_treeviewLocations_cursor_changed(widget):
     	iters = [model.get_iter(path) for path in selected]
     	
 	for iter in iters:
-		model.get_value(iter,0)
+		for name,alias in sname.iteritems():	
+			if alias == model.get_value(iter,0):
+				print locations[name]
 
-	print 
+	
 def on_treeviewLocations_select_all(widget):
 	print 'on_treeviewLocations_select_all'
 def on_notebook_switch_page(notebook, page, page_num):
@@ -256,6 +258,7 @@ sname = {}
 for item in config.items('STATIONS'):
 	sname.update({item[0].upper():item[1]})
 
+#print sname
 dic = 	{ 
 	'on_mainWindow_destroy' : quit,
 	'on_notebook_switch_page':on_notebook_switch_page,
