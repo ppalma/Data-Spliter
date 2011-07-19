@@ -159,8 +159,17 @@ def on_treeviewLocations_columns_changed(widget):
 	print'on_treeviewLocations_columns_changed'
 def on_treeviewLocations_cursor_changed(widget):
 	#print 'on_treeviewLocations_cursor_changed'
-	(obj,index) = widget.get_selection().get_selected_rows()
-	print index
+	
+	selection = widget.get_selection()
+    	model, selected = selection.get_selected_rows()
+    	iters = [model.get_iter(path) for path in selected]
+    	
+	for iter in iters:
+		model.get_value(iter,0)
+
+	print 
+def on_treeviewLocations_select_all(widget):
+	print 'on_treeviewLocations_select_all'
 def on_notebook_switch_page(notebook, page, page_num):
 
 	config.read(CONFIG_FILE)
@@ -252,10 +261,11 @@ dic = 	{
 	'on_notebook_switch_page':on_notebook_switch_page,
 	'on_buttonExecute_clicked':on_buttonExecute_clicked,
 	'on_checkbuttonLogFile_toggled':on_checkbuttonLogFile_toggled,
-	'on_treeviewLocations_select_cursor_row':on_treeviewLocations_select_cursor_row,
-	'on_treeviewLocations_row_activated':on_treeviewLocations_row_activated,
-	'on_treeviewLocations_columns_changed':on_treeviewLocations_columns_changed,
-	'on_treeviewLocations_cursor_changed':on_treeviewLocations_cursor_changed
+#	'on_treeviewLocations_select_cursor_row':on_treeviewLocations_select_cursor_row,
+#	'on_treeviewLocations_row_activated':on_treeviewLocations_row_activated,
+#	'on_treeviewLocations_columns_changed':on_treeviewLocations_columns_changed,
+	'on_treeviewLocations_cursor_changed':on_treeviewLocations_cursor_changed,
+#	'on_treeviewLocations_select_all':on_treeviewLocations_select_all,
 	}
 		
 wTree.signal_autoconnect( dic )

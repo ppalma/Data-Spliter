@@ -376,8 +376,8 @@ wfdisc</property>
                               <widget class="GtkFileChooserButton" id="filechooserbuttonLocalDir">
                                 <property name="visible">True</property>
                                 <property name="orientation">vertical</property>
-                                <property name="action">select-folder</property>
                                 <property name="create_folders">False</property>
+                                <property name="action">select-folder</property>
                                 <property name="title" translatable="yes">Select A Folder</property>
                               </widget>
                               <packing>
@@ -765,9 +765,6 @@ sparc
                           </packing>
                         </child>
                         <child>
-                          <placeholder/>
-                        </child>
-                        <child>
                           <widget class="GtkTreeView" id="treeviewLocations">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
@@ -775,11 +772,15 @@ sparc
                             <signal name="cursor_changed" handler="on_treeviewLocations_cursor_changed"/>
                             <signal name="row_activated" handler="on_treeviewLocations_row_activated"/>
                             <signal name="columns_changed" handler="on_treeviewLocations_columns_changed"/>
+                            <signal name="select_all" handler="on_treeviewLocations_select_all"/>
                           </widget>
                           <packing>
                             <property name="top_attach">1</property>
                             <property name="bottom_attach">2</property>
                           </packing>
+                        </child>
+                        <child>
+                          <placeholder/>
                         </child>
                       </widget>
                       <packing>
