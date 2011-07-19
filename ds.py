@@ -21,6 +21,9 @@ import time,datetime
 
 
 CONFIG_FILE = '/usr/src/git/dataSplitter/ds.cfg'
+locations = {}
+
+
 def quit(widget):
 	gtk.main_quit()  
 	sys.exit(0)
@@ -102,34 +105,29 @@ def read_config():
 def waveman2disk_init():
 
 	f = open('wave_serverV.d','r')
-	stations = {}
-	locations = {}
-	s = {} 
 	for line in f:
 		sline = line.split(' ')
 		if sline[0] == 'Tank':
 			location = sline[5]
 			station = sline[1][0:-1]
 			comp = sline[1][-1]
-			print location
+			
 			if not locations.has_key(location):
 				locations[location] = {station:[comp]}	
 			else:
 				if not locations[location].has_key(station):
-					locations[location] = {station:[comp]}
+					locations[location].update( {station:[comp]} )
 				else:	
 					locations[location][station].append(comp)
-
-
-	print locations
 
 	wTree.get_widget('dateeditFrom').set_time( 0 )
 	wTree.get_widget('dateeditTo').set_time( 0 )
 	wTree.get_widget('comboboxDataFormat').set_active( 0 )
 	wTree.get_widget('comboboxOutputFormat').set_active( 0 )
 	
-	table =   wTree.get_widget('tableLocation')
-	tree = gtk.TreeView()
+	table =  wTree.get_widget('tableLocation')
+	#tree = gtk.TreeView()
+	tree =  wTree.get_widget('treeviewLocations')
 
 	tree.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
 
@@ -144,15 +142,25 @@ def waveman2disk_init():
 
         treestore = gtk.TreeStore(str)
 
-        it = treestore.append(None, ["Hudson"])
-        it = treestore.append(None, ["Melimoyu"])
-        it = treestore.append(None, ["Fiordo"])
+	for k in locations:
+        	treestore.append(None, [sname[k]])
 
         tree.append_column(languages)
         tree.set_model(treestore)
-	table.attach(tree,0,1,1,2)
+#	table.attach(tree,0,1,1,2)
 	table.show_all()	
+def on_treeviewLocations_select_cursor_row(widget):
+	print 'asdf'
 
+def on_treeviewLocations_row_activated(widget,index,column):
+	print 'on_treeviewLocations_row_activated (double click)'
+
+def on_treeviewLocations_columns_changed(widget):
+	print'on_treeviewLocations_columns_changed'
+def on_treeviewLocations_cursor_changed(widget):
+	#print 'on_treeviewLocations_cursor_changed'
+	(obj,index) = widget.get_selection().get_selected_rows()
+	print index
 def on_notebook_switch_page(notebook, page, page_num):
 
 	config.read(CONFIG_FILE)
@@ -232,12 +240,22 @@ def on_buttonExecute_clicked(widget):
 
 wTree = gtk.glade.XML("ds.glade")
 config = ConfigParser.ConfigParser()
+config.read(CONFIG_FILE)
+
+
+sname = {}
+for item in config.items('STATIONS'):
+	sname.update({item[0].upper():item[1]})
 
 dic = 	{ 
 	'on_mainWindow_destroy' : quit,
 	'on_notebook_switch_page':on_notebook_switch_page,
 	'on_buttonExecute_clicked':on_buttonExecute_clicked,
 	'on_checkbuttonLogFile_toggled':on_checkbuttonLogFile_toggled,
+	'on_treeviewLocations_select_cursor_row':on_treeviewLocations_select_cursor_row,
+	'on_treeviewLocations_row_activated':on_treeviewLocations_row_activated,
+	'on_treeviewLocations_columns_changed':on_treeviewLocations_columns_changed,
+	'on_treeviewLocations_cursor_changed':on_treeviewLocations_cursor_changed
 	}
 		
 wTree.signal_autoconnect( dic )

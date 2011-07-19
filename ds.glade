@@ -376,8 +376,8 @@ wfdisc</property>
                               <widget class="GtkFileChooserButton" id="filechooserbuttonLocalDir">
                                 <property name="visible">True</property>
                                 <property name="orientation">vertical</property>
-                                <property name="create_folders">False</property>
                                 <property name="action">select-folder</property>
+                                <property name="create_folders">False</property>
                                 <property name="title" translatable="yes">Select A Folder</property>
                               </widget>
                               <packing>
@@ -749,12 +749,6 @@ sparc
                         <property name="n_rows">2</property>
                         <property name="n_columns">2</property>
                         <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
                           <widget class="GtkLabel" id="label4">
                             <property name="visible">True</property>
                             <property name="label" translatable="yes">Location</property>
@@ -770,6 +764,23 @@ sparc
                             <property name="right_attach">2</property>
                           </packing>
                         </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <widget class="GtkTreeView" id="treeviewLocations">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <signal name="select_cursor_row" handler="on_treeviewLocations_select_cursor_row"/>
+                            <signal name="cursor_changed" handler="on_treeviewLocations_cursor_changed"/>
+                            <signal name="row_activated" handler="on_treeviewLocations_row_activated"/>
+                            <signal name="columns_changed" handler="on_treeviewLocations_columns_changed"/>
+                          </widget>
+                          <packing>
+                            <property name="top_attach">1</property>
+                            <property name="bottom_attach">2</property>
+                          </packing>
+                        </child>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -778,16 +789,7 @@ sparc
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkTreeView" id="treeview1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
-                      </packing>
+                      <placeholder/>
                     </child>
                   </widget>
                   <packing>
