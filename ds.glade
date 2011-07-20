@@ -402,9 +402,10 @@ wfdisc</property>
                         <property name="n_rows">3</property>
                         <property name="n_columns">3</property>
                         <child>
-                          <widget class="GtkExpander" id="expander1">
+                          <widget class="GtkExpander" id="expander">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <signal name="activate" handler="on_expander_activate"/>
                             <child>
                               <widget class="GtkTable" id="table3">
                                 <property name="visible">True</property>
@@ -711,6 +712,8 @@ sparc
                             <property name="right_attach">2</property>
                             <property name="top_attach">1</property>
                             <property name="bottom_attach">2</property>
+                            <property name="x_options"></property>
+                            <property name="y_options"></property>
                           </packing>
                         </child>
                         <child>

@@ -126,34 +126,32 @@ def waveman2disk_init():
 					locations[location][station].append(comp)
 	f.close()
 	os.system('rm -f ./wave_serverV.d')
+
+
 	wTree.get_widget('dateeditFrom').set_time( 0 )
 	wTree.get_widget('dateeditTo').set_time( 0 )
 	wTree.get_widget('comboboxDataFormat').set_active( 0 )
 	wTree.get_widget('comboboxOutputFormat').set_active( 0 )
 	
 	table =  wTree.get_widget('tableLocation')
-	#tree = gtk.TreeView()
 	tree =  wTree.get_widget('treeviewLocations')
 
-	tree.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
+	if not tree.get_columns():
+		languages = gtk.TreeViewColumn()
+		languages.set_title("Locations")
+
+        	cell = gtk.CellRendererText()
+        	languages.pack_start(cell, True)
+        	languages.add_attribute(cell, "text", 0)
+
+        	treestore = gtk.TreeStore(str)
+		treestore.clear()
+		for k in locations:
+        		treestore.append(None, [sname[k]])
 
 
-
-	languages = gtk.TreeViewColumn()
-	languages.set_title("Locations")
-
-        cell = gtk.CellRendererText()
-        languages.pack_start(cell, True)
-        languages.add_attribute(cell, "text", 0)
-
-        treestore = gtk.TreeStore(str)
-
-	for k in locations:
-        	treestore.append(None, [sname[k]])
-
-        tree.append_column(languages)
-        tree.set_model(treestore)
-#	table.attach(tree,0,1,1,2)
+        	tree.append_column(languages)
+        	tree.set_model(treestore)
 	table.show_all()	
 def on_treeviewLocations_select_cursor_row(widget):
 	print 'asdf'
@@ -164,7 +162,6 @@ def on_treeviewLocations_row_activated(widget,index,column):
 def on_treeviewLocations_columns_changed(widget):
 	print'on_treeviewLocations_columns_changed'
 def on_treeviewLocations_cursor_changed(widget):
-	#print 'on_treeviewLocations_cursor_changed'
 	
 	selection = widget.get_selection()
     	model, selected = selection.get_selected_rows()
@@ -181,7 +178,6 @@ def on_treeviewLocations_cursor_changed(widget):
 				for stations in locations[name]:
 					hbox = gtk.HBox()
 					hbox.pack_start(gtk.Label(stations))
-					#for com in locations[name][stations]:
 					for com in ['E','N','Z']:
 						cb = gtk.CheckButton(com)
 						try:
@@ -224,7 +220,6 @@ def get_SCNL():
 	for name in locations:
 		for station in locations[name]:
 			for comp in locations[name][station]:
-				#print "%s %s %s"%(name,station,comp)	
 				ret.append("%s%s %s%s %s %s"%(station,comp,'BH',comp,'CY',name))
 	return ret
 def on_buttonExecute_clicked(widget):
@@ -297,10 +292,15 @@ def on_buttonExecute_clicked(widget):
 	print cmd
 	os.system(cmd)
 
+def on_expander_activate(widget):
+	if widget.get_expanded():
+		widget.get_parent().resize(1, 1)
+
+
+print GLADE_FILE,CONFIG_FILE
 wTree = gtk.glade.XML(GLADE_FILE)
 config = ConfigParser.ConfigParser()
 config.read(CONFIG_FILE)
-print GLADE_FILE,CONFIG_FILE
 
 sname = {}
 for item in config.items('STATIONS'):
@@ -312,6 +312,7 @@ dic = 	{
 	'on_buttonExecute_clicked':on_buttonExecute_clicked,
 	'on_checkbuttonLogFile_toggled':on_checkbuttonLogFile_toggled,
 	'on_treeviewLocations_cursor_changed':on_treeviewLocations_cursor_changed,
+	'on_expander_activate':on_expander_activate
 	}
 		
 wTree.signal_autoconnect( dic )
