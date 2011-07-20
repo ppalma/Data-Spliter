@@ -206,14 +206,21 @@ def on_notebook_switch_page(notebook, page, page_num):
 	config.read(CONFIG_FILE)
 	if page_num == 1:
 		waveman2disk_init()
-		
 	if page_num == 2:
 		read_config()		
 
 def on_checkbuttonLogFile_toggled(widget):
 	widget.set_label(("Disabled", "Enabled")[widget.get_active()])	
 
-#print "%s"%(('Enable','Disable')[widget.toggled()])
+
+def get_SCNL():
+	ret = []
+	for name in locations:
+		for station in locations[name]:
+			for comp in locations[name][station]:
+				#print "%s %s %s"%(name,station,comp)	
+				ret.append("%s%s %s%s %s %s"%(station,comp,'BH',comp,'CY',name))
+	return ret
 def on_buttonExecute_clicked(widget):
 			
 	comboboxDataFormat = wTree.get_widget('comboboxDataFormat')
@@ -225,7 +232,6 @@ def on_buttonExecute_clicked(widget):
 	entryTrigFile = wTree.get_widget('entryTrigFile')
 	entryWaveServer = wTree.get_widget('entryWaveServer')
 	entryOutDir = wTree.get_widget('entryOutDir')
-	entrySaveSCNL = wTree.get_widget('entrySaveSCNL')
 
 	spinbuttonMaxTraces = wTree.get_widget('spinbuttonMaxTraces')
 	spinbuttonTraceBufferLen = wTree.get_widget('spinbuttonTraceBufferLen')
@@ -246,7 +252,6 @@ def on_buttonExecute_clicked(widget):
 	file.write('DataFormat %s\n'% comboboxDataFormat.get_active_text())
 	file.write('LogFile %s\n'% ('1', '0')[not checkbuttonLogFile.get_active()] )
 	file.write('InputMethod %s\n'% entryInputMethod.get_text() )
-	file.write('SaveSCNL %s\n'% entrySaveSCNL.get_text())
 	file.write('OutDir %s\n'% entryOutDir.get_text())
 	file.write('OutputFormat %s\n'% comboboxOutputFormat.get_active_text())
 	file.write('WaveServer %s\n'%entryWaveServer.get_text() )
@@ -255,11 +260,17 @@ def on_buttonExecute_clicked(widget):
 	file.write('TraceBufferLen %d\n'%spinbuttonTraceBufferLen.get_value())
 	file.write('GapThresh %s\n'%spinbuttonGapThresh.get_value())
 	file.write('MinDuration %d\n'%spinbuttonMinDuration.get_value())
+	for scnl in get_SCNL():
+		file.write('SaveSCNL %s\n'% scnl)
 	file.close()
 
-
-	os.system('scp waveman2disk2.d user@172.16.5.51:/usr/local/Earthworm/Run_OVC/Params')
+	
 	config.read(CONFIG_FILE)
+	cmd = 'scp waveman2disk2.d %s@%s:/usr/local/Earthworm/Run_OVC/Params'%(
+                                config.get('WAVEMAN2DISK','user'),
+                                config.get('WAVEMAN2DISK','server'))
+
+	os.system(cmd)
 	s = socket(AF_INET, SOCK_STREAM) 
 	s.connect((config.get('WAVEMAN2DISK','server'), int(config.get('WAVEMAN2DISK','port'))))
 	s.send('waveman2disk2')
@@ -274,7 +285,9 @@ def on_buttonExecute_clicked(widget):
 	)
 	
 	time.sleep(5)	
-	cmd = 'scp -r user@172.16.5.51:%s %s'%(remoteFolder,filechooserbuttonLocalDir.get_current_folder())
+	cmd = 'scp -r %s@%s:%s %s'%(
+	config.get('WAVEMAN2DISK','user'),config.get('WAVEMAN2DISK','server'),	
+	remoteFolder,filechooserbuttonLocalDir.get_current_folder())
 	print cmd
 	os.system(cmd)
 
