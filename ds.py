@@ -299,6 +299,8 @@ def on_buttonExecute_clicked(widget):
 
 wTree = gtk.glade.XML(GLADE_FILE)
 config = ConfigParser.ConfigParser()
+config.read(CONFIG_FILE)
+print GLADE_FILE,CONFIG_FILE
 
 sname = {}
 for item in config.items('STATIONS'):
