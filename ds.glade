@@ -376,8 +376,8 @@ wfdisc</property>
                               <widget class="GtkFileChooserButton" id="filechooserbuttonLocalDir">
                                 <property name="visible">True</property>
                                 <property name="orientation">vertical</property>
-                                <property name="create_folders">False</property>
                                 <property name="action">select-folder</property>
+                                <property name="create_folders">False</property>
                                 <property name="title" translatable="yes">Select A Folder</property>
                               </widget>
                               <packing>

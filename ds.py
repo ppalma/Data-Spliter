@@ -19,9 +19,9 @@ from socket import *
 import time,datetime
 
 
-BASE_PATH = '/usr/src/git/dataSplitter/'
-CONFIG_FILE = '%sds.cfg'%BASE_PATH
-GLADE_FILE = '%sds.glade'%BASE_PATH
+BASE_PATH = '/opt/Data-Spliter'
+CONFIG_FILE = '%s/ds.cfg'%BASE_PATH
+GLADE_FILE = '%s/ds.glade'%BASE_PATH
 locations = {}
 
 
@@ -299,10 +299,6 @@ def on_buttonExecute_clicked(widget):
 
 wTree = gtk.glade.XML(GLADE_FILE)
 config = ConfigParser.ConfigParser()
-
-
-print config.read(CONFIG_FILE)
-
 
 sname = {}
 for item in config.items('STATIONS'):
