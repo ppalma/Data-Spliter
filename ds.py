@@ -164,12 +164,41 @@ def on_treeviewLocations_cursor_changed(widget):
     	model, selected = selection.get_selected_rows()
     	iters = [model.get_iter(path) for path in selected]
     	
+	vbox = wTree.get_widget('vboxStations')
+	
+	for ch in vbox.get_children():
+		vbox.remove(ch)					
+
 	for iter in iters:
 		for name,alias in sname.iteritems():	
 			if alias == model.get_value(iter,0):
-				print locations[name]
-
+				for stations in locations[name]:
+					hbox = gtk.HBox()
+					hbox.pack_start(gtk.Label(stations))
+					#for com in locations[name][stations]:
+					for com in ['E','N','Z']:
+						cb = gtk.CheckButton(com)
+						try:
+							locations[name][stations].index(com)
+							cb.set_active(True)
+						except:
+							cb.set_active(False)
+						cb.connect(
+							"toggled", 
+							on_checkbutton_toggled, 
+							(name ,stations ,com )
+							)
+						hbox.pack_end(cb, True,True,1)
+					vbox.pack_end(hbox,True,True,2)
+	vbox.show_all()
 	
+def on_checkbutton_toggled(widget, data=None):
+	#data = (location,station,component)
+	if widget.get_active():
+		locations[data[0]][data[1]].append(data[2])
+	else:
+		locations[data[0]][data[1]].remove(data[2])
+		
 def on_treeviewLocations_select_all(widget):
 	print 'on_treeviewLocations_select_all'
 def on_notebook_switch_page(notebook, page, page_num):
