@@ -19,8 +19,9 @@ from socket import *
 import time,datetime
 
 
-
-CONFIG_FILE = '/usr/src/git/dataSplitter/ds.cfg'
+BASE_PATH = '/usr/src/git/dataSplitter/'
+CONFIG_FILE = '%sds.cfg'%BASE_PATH
+GLADE_FILE = '%sds.glade'%BASE_PATH
 locations = {}
 
 
@@ -103,8 +104,12 @@ def read_config():
 		vbox.pack_start(hbox, False, False, 0)
 
 def waveman2disk_init():
-
-	f = open('wave_serverV.d','r')
+	config.read(CONFIG_FILE)
+        cmd = 'scp %s@%s:/usr/local/Earthworm/Run_OVC/Params/wave_serverV.d .'%(
+                                config.get('WAVEMAN2DISK','user'),
+                                config.get('WAVEMAN2DISK','server'))
+	os.system(cmd)	
+	f = open('./wave_serverV.d','r')
 	for line in f:
 		sline = line.split(' ')
 		if sline[0] == 'Tank':
@@ -119,7 +124,8 @@ def waveman2disk_init():
 					locations[location].update( {station:[comp]} )
 				else:	
 					locations[location][station].append(comp)
-
+	f.close()
+	os.system('rm -f ./wave_serverV.d')
 	wTree.get_widget('dateeditFrom').set_time( 0 )
 	wTree.get_widget('dateeditTo').set_time( 0 )
 	wTree.get_widget('comboboxDataFormat').set_active( 0 )
@@ -291,26 +297,23 @@ def on_buttonExecute_clicked(widget):
 	print cmd
 	os.system(cmd)
 
-wTree = gtk.glade.XML("ds.glade")
+wTree = gtk.glade.XML(GLADE_FILE)
 config = ConfigParser.ConfigParser()
-config.read(CONFIG_FILE)
+
+
+print config.read(CONFIG_FILE)
 
 
 sname = {}
 for item in config.items('STATIONS'):
 	sname.update({item[0].upper():item[1]})
 
-#print sname
 dic = 	{ 
 	'on_mainWindow_destroy' : quit,
 	'on_notebook_switch_page':on_notebook_switch_page,
 	'on_buttonExecute_clicked':on_buttonExecute_clicked,
 	'on_checkbuttonLogFile_toggled':on_checkbuttonLogFile_toggled,
-#	'on_treeviewLocations_select_cursor_row':on_treeviewLocations_select_cursor_row,
-#	'on_treeviewLocations_row_activated':on_treeviewLocations_row_activated,
-#	'on_treeviewLocations_columns_changed':on_treeviewLocations_columns_changed,
 	'on_treeviewLocations_cursor_changed':on_treeviewLocations_cursor_changed,
-#	'on_treeviewLocations_select_all':on_treeviewLocations_select_all,
 	}
 		
 wTree.signal_autoconnect( dic )
