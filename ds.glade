@@ -163,46 +163,11 @@
             <property name="can_focus">True</property>
             <signal name="switch_page" handler="on_notebook_switch_page"/>
             <child>
-              <widget class="GtkTable" id="table1">
-                <property name="visible">True</property>
-                <property name="n_rows">3</property>
-                <property name="n_columns">3</property>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-              </widget>
+              <placeholder/>
             </child>
             <child>
-              <widget class="GtkLabel" id="label1">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">page 1</property>
-              </widget>
+              <placeholder/>
               <packing>
-                <property name="tab_fill">False</property>
                 <property name="type">tab</property>
               </packing>
             </child>
@@ -376,8 +341,8 @@ wfdisc</property>
                               <widget class="GtkFileChooserButton" id="filechooserbuttonLocalDir">
                                 <property name="visible">True</property>
                                 <property name="orientation">vertical</property>
-                                <property name="create_folders">False</property>
                                 <property name="action">select-folder</property>
+                                <property name="create_folders">False</property>
                                 <property name="title" translatable="yes">Select A Folder</property>
                               </widget>
                               <packing>

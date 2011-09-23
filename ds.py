@@ -206,9 +206,10 @@ def on_treeviewLocations_select_all(widget):
 def on_notebook_switch_page(notebook, page, page_num):
 
 	config.read(CONFIG_FILE)
-	if page_num == 1:
+#	print page_num
+	if page_num == 0:
 		waveman2disk_init()
-	if page_num == 2:
+	if page_num == 1:
 		read_config()		
 
 def on_checkbuttonLogFile_toggled(widget):
@@ -316,4 +317,5 @@ dic = 	{
 	}
 		
 wTree.signal_autoconnect( dic )
+waveman2disk_init()
 gtk.main()
