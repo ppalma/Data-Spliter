@@ -1,11 +1,11 @@
-StartTime 20110726000000
-Duration 60
+StartTime 20110923150000
+Duration 120
 DataFormat sac
 LogFile 0
 InputMethod interactive
 OutDir /home/user/event/INTERACTIVE
 OutputFormat intel
-WaveServer 192.168.2.2 16022
+WaveServer 172.16.5.51 16022
 TimeoutSeconds 500
 MaxTraces 100
 TraceBufferLen 72000

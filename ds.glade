@@ -376,8 +376,8 @@ wfdisc</property>
                               <widget class="GtkFileChooserButton" id="filechooserbuttonLocalDir">
                                 <property name="visible">True</property>
                                 <property name="orientation">vertical</property>
-                                <property name="action">select-folder</property>
                                 <property name="create_folders">False</property>
+                                <property name="action">select-folder</property>
                                 <property name="title" translatable="yes">Select A Folder</property>
                               </widget>
                               <packing>
@@ -534,7 +534,7 @@ wfdisc</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="invisible_char">&#x25CF;</property>
-                                    <property name="text" translatable="yes">192.168.2.2 16022</property>
+                                    <property name="text" translatable="yes">172.16.5.51 16022</property>
                                   </widget>
                                   <packing>
                                     <property name="left_attach">1</property>
