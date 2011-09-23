@@ -1,0 +1,297 @@
+#
+#         Wave ServerV Configuration File 
+#
+#	Note:  All directories defined in this configuration file must already
+#		exit or WaveServerV will die.
+#
+MyModuleId    MOD_WAVESERVERV # wave_server's module id
+RingName      WAVE_RING        # name of transport ring to get data from
+LogFile       0                # 1=write log file to disk; 0=don't
+                               # 2=write to module log but not stderr/stdout
+HeartBeatInt  15               # seconds between heartbeats to statmgr
+ServerIPAdr   192.168.2.2      # address of machine running wave_server: geops.geophys
+ServerPort    16022            # port for receiving requests & sending waves
+GapThresh     1.5              # threshhold for gap declaration 
+                               # (in sampling periods)
+
+#
+
+SocketTimeout 11000  # Timeout length in MILLISECONDS for socket calls
+                     # This is for calls sending responses back to the
+                     # client. Values should be a few seconds, certainly
+                     # less than one minute.
+
+
+ClientTimeout  60000 # Optional.  Not recommended feature but it does work.
+                     # Timeout in MILLISECONDS for response from client. 
+                     # Threads that have not heard anything from their client 
+                     # in this period will exit.
+                     # Comment out or set to -1 if you don't want to 
+                     # kill threads of silent clients.
+
+
+# Each tank file has an associated in-memory index.  On re-start, the
+# index image on disk must be updated to match the tank.  The more out
+# of date the on-disk index is, the longer it takes to rebuild.  Rebuild
+# times can be from milliseconds to minutes per tank, depending how large
+# the tank is and how old the index is.
+# Set IndexUpdate to the length in time in seconds between
+# updates to disk.  The larger the update interval, the longer
+# a crash recovery will take.  The smaller the update interval
+# the more disk I/O that is required for wave_server to operate,
+# and thus the slower it will operate, once it has reached I/O
+# saturation. 
+
+IndexUpdate   10		       
+			       
+
+# Similar to an Index, each tank has TANK structure that depicts the tank.
+# The tank structure is maintained in memory, and periodically written to
+# disk.  The TANK structure tracks the status of the tank.  Any data written
+# to the tank since the last time the TANK structure was written to disk
+# is effectively lost.  TankStructUpdate is the interval in seconds that the
+# Tank Structure file on disk is updated.  The higher the interval, the more
+# the tank data is that is potentially lost in a crash, the lower the interval
+# the more the disk I/O that is required for wave_server to operate.
+
+TankStructUpdate 1
+
+# The file where TANK structures are stored
+
+TankStructFile  /home/user/data/tankfiles2/p1000-1.str
+
+# I open many files, one tracedata file for each SCNL channel to serve
+# At 500 bytes/second, 1 channel requires 41.2 megabytes per day.
+# NOTE: Record size must be multiple of 4 bytes or wave_serverV will crash 
+# with data misalignment. 
+# Also, record size must not be greater than MAX_TRACEBUF_SIZ, currently 4096,
+# (defined in tracebuf.h)
+#
+#           SCNL      Record       Logo                  File Size   Index Size       File Name	    New       
+#          names       size  (TYPE_TRACEBUF2 only)         (megabytes) (max breaks)     (full path)      Tank      
+
+#Tank BO2E  BHE TC CC  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  C:\data\tankfiles2\BO2E_BHE_TC_CC.tnk
+# ---------
+# FIORDO
+# ---------
+
+# Fiordo - Coyhaique
+Tank COYE  BHE CY FF  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 40000  /home/user/data/tankfiles2/COYE_BHE_CY_FF.tnk
+Tank COYN  BHN CY FF  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 40000  /home/user/data/tankfiles2/COYN_BHN_CY_FF.tnk
+Tank COYZ  BHZ CY FF  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 40000  /home/user/data/tankfiles2/COYZ_BHZ_CY_FF.tnk
+#Tank COYN  BHN CY FF  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/COYN_BHN_CY_FF.tnk
+#Tank COYZ  BHZ CY FF  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/COYZ_BHZ_CY_FF.tnk
+
+#ChanInfo "COYQ 4R3000 CY COYZ FF BHZ 4"
+#ChanInfo "COYQ 4R30X2 CY COYZ FF BHZ 5"
+
+# Fiordo - Aysen
+Tank AYSE  BHE CY FF  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/AYSE_BHE_CY_FF.tnk
+Tank AYSN  BHN CY FF  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/AYSN_BHN_CY_FF.tnk
+Tank AYSZ  BHZ CY FF  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/AYSZ_BHZ_CY_FF.tnk
+
+# Fiordo - Chacabuco
+Tank CHAE  BHE CY FF  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/CHAE_BHE_CY_FF.tnk
+Tank CHAN  BHN CY FF  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/CHAN_BHN_CY_FF.tnk
+Tank CHAZ  BHZ CY FF  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/CHAZ_BHZ_CY_FF.tnk
+
+# ------
+# MELIMOYU
+# ------
+
+# Melimoyu - Puyu
+Tank PUYE  BHE CY ML  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/PUYE_BHE_CY_ML.tnk
+Tank PUYN  BHN CY ML  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/PUYN_BHN_CY_ML.tnk
+Tank PUYZ  BHZ CY ML  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/PUYZ_BHZ_CY_ML.tnk
+
+# Melimoyu - Junta
+Tank JUNE  BHE CY ML  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/JUNE_BHE_CY_ML.tnk
+Tank JUNN  BHN CY ML  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/JUNN_BHN_CY_ML.tnk
+Tank JUNZ  BHZ CY ML  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/JUNZ_BHZ_CY_ML.tnk
+
+# Melimoyu - Mel
+Tank MELE  BHE CY ML  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/MELE_BHE_CY_ML.tnk
+Tank MELN  BHN CY ML  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/MELN_BHN_CY_ML.tnk
+Tank MELZ  BHZ CY ML  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/MELZ_BHZ_CY_ML.tnk
+
+
+# Melimoyu - RMB
+Tank RMBE  BHE CY ML  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/RMBE_BHE_CY_ML.tnk
+Tank RMBN  BHN CY ML  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/RMBN_BHN_CY_ML.tnk
+Tank RMBZ  BHZ CY ML  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/RMBZ_BHZ_CY_ML.tnk
+
+# ------
+# HUDSON
+# ------
+
+# Melimoyu - Hudson
+Tank HUDE  BHE CY HD  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/HUDE_BHE_CY_HD.tnk
+Tank HUDN  BHN CY HD  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/HUDN_BHN_CY_HD.tnk
+Tank HUDZ  BHZ CY HD  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/HUDZ_BHZ_CY_HD.tnk
+
+# Melimoyu - Malva
+Tank MALE  BHE CY HD  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/MALE_BHE_CY_HD.tnk
+Tank MALN  BHN CY HD  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/MALN_BHN_CY_HD.tnk
+Tank MALZ  BHZ CY HD  4096  INST_WILDCARD      MOD_SCREAM2EW     1000 10000  /home/user/data/tankfiles2/MALZ_BHZ_CY_HD.tnk
+
+# -------
+# CHAITEN
+# -------
+
+## Pillán - Chaitén
+#Tank PILZ  BHZ TC CC  4096  INST_WILDCARD      MOD_WILDCARD     1000 10000  /home/user/data/tankfiles2/PILZ_BHZ_TC_CC.tnk
+#Tank PILN  BHN TC CC  4096  INST_WILDCARD      MOD_WILDCARD     1000 10000  /home/user/data/tankfiles2/PILN_BHN_TC_CC.tnk
+#Tank PILE  BHE TC CC  4096  INST_WIChanInfo "COYQ 4R3000 CY COYZ FF BHZ 4"
+#ChanInfo "COYQ 4R30X2 CY COYZ FF BHZ 5"LDCARD      MOD_WILDCARD     1000 10000  /home/user/data/tankfiles2/PILE_BHE_TC_CC.tnk
+
+## Santa Bárbara - Chaitén
+#Tank STBZ  BHZ TC CC  4096  INST_WILDCARD      MOD_WILDCARD     1000 10000  /home/user/data/tankfiles2/STBZ_BHZ_TC_CC.tnk
+#Tank STBN  BHN TC CC  4096  INST_WILDCARD      MOD_WILDCARD     1000 10000  /home/user/data/tankfiles2/STBN_BHN_TC_CC.tnk
+#Tank STBE  BHE TC CC  4096  INST_WILDCARD      MOD_WILDCARD     1000 10000  /home/user/data/tankfiles2/STBE_BHE_TC_CC.tnk
+
+## Caldera - Chaitén
+#Tank CALZ  BHZ TC CC  4096  INST_WILDCARD      MOD_WILDCARD     1000 10000  /home/user/data/tankfiles2/CALZ_BHZ_TC_CC.tnk
+#Tank CALN  BHN TC CC  4096  INST_WILDCARD      MOD_WILDCARD     1000 10000  /home/user/data/tankfiles2/CALN_BHN_TC_CC.tnk
+#Tank CALE  BHE TC CC  4096  INST_WILDCARD      MOD_WILDCARD     1000 10000  /home/user/data/tankfiles2/CALE_BHE_TC_CC.tnk
+
+## Bonito2 - Chaitén
+#Tank BO2Z  BHZ TC CC  4096  INST_WILDCARD      MOD_WILDCARD     1000 10000  /home/user/data/tankfiles2/BO2Z_BHZ_TC_CC.tnk
+#Tank BO2N  BHN TC CC  4096  INST_WILDCARD      MOD_WILDCARD     1000 10000  /home/user/data/tankfiles2/BO2N_BHN_TC_CC.tnk
+#Tank BO2E  BHE TC CC  4096  INST_WILDCARD      MOD_WILDCARD     1000 10000  /home/user/data/tankfiles2/BO2E_BHE_TC_CC.tnk
+
+## Torre - Chaitén
+#Tank TORZ  BHZ TC CC  4096  INST_WILDCARD      MOD_WILDCARD     1000 10000  /home/user/data/tankfiles2/TORZ_BHZ_TC_CC.tnk
+#Tank TORN  BHN TC CC  4096  INST_WILDCARD      MOD_WILDCARD     1000 10000  /home/user/data/tankfiles2/TORN_BHN_TC_CC.tnk
+#Tank TORE  BHE TC CC  4096  INST_WILDCARD      MOD_WILDCARD     1000 10000  /home/user/data/tankfiles2/TORE_BHE_TC_CC.tnk
+
+## Caverna - Chaitén
+#Tank CAVZ  BHZ TC CC  4096  INST_WILDCARD      MOD_WILDCARD     1000 10000  /home/user/data/tankfiles2/CAVZ_BHZ_TC_CC.tnk
+#Tank CAVN  BHN TC CC  4096  INST_WILDCARD      MOD_WILDCARD     1000 10000  /home/user/data/tankfiles2/CAVN_BHN_TC_CC.tnk
+#Tank CAVE  BHE TC CC  4096  INST_WILDCARD      MOD_WILDCARD     1000 10000  /home/user/data/tankfiles2/CAVE_BHE_TC_CC.tnk
+
+## Camahueto - Chaitén
+##Tank CAMZ  EHZ TC CC  4096  INST_WILDCARD      MOD_WILDCARD     1000 10000  /home/user/data/tankfiles2/CAMZ_EHZ_TC_CC.tnk
+
+##Bla -Chaiten
+#Tank BLAE  BHE TC CC  4096  INST_WILDCARD      MOD_WILDCARD     1000 10000  /home/user/data/tankfiles2/BLAE_BHE_TC_CC.tnk
+#Tank BLAN  BHN TC CC  4096  INST_WILDCARD      MOD_WILDCARD     1000 10000  /home/user/data/tankfiles2/BLAN_BHN_TC_CC.tnk
+#Tank BLAZ  BHZ TC CC  4096  INST_WILDCARD      MOD_WILDCARD     1000 10000  /home/user/data/tankfiles2/BLAZ_BHZ_TC_CC.tnk
+
+##Dik
+#Tank DIKE  BHE TC CC  4096  INST_WILDCARD      MOD_WILDCARD     1000 10000  /home/user/data/tankfiles2/DIKE_BHE_TC_CC.tnk
+#Tank DIKN  BHN TC CC  4096  INST_WILDCARD      MOD_WILDCARD     1000 10000  /home/user/data/tankfiles2/DIKN_BHN_TC_CC.tnk
+#Tank DIKZ  BHZ TC CC  4096  INST_WILDCARD      MOD_WILDCARD     1000 10000  /home/user/data/tankfiles2/DIKZ_BHZ_TC_CC.tnk
+
+# Advanced Options
+# YES = 1, NO = 0, NO = (default)
+
+#RedundantTankStructFiles  Set to 1 to use redundant tank struct files. (Recommended)
+RedundantTankStructFiles 1
+
+#RedundantIndexFiles  Set to 1 to use redundant tank index files. (Recommended)
+RedundantIndexFiles      1
+
+
+# Must be set if RedundantTankStructFiles = 1
+#TankStructFile2  /tmp/p1000-2.str
+TankStructFile2  /home/user/data/tankfiles2/p1000-2.str
+
+
+#InputQueueLen:  The number of messages to buffer.  Messages are buffered
+#in a queue.  They are added to the queue when they are pulled off of an
+#earthworm message ring, they are removed from the queue when the main
+#thread is ready to process them.  Depending on the CPU and disk speed
+#of the machine you are using, this number should be about twice the
+#number of tanks you are trying to serve.  Slower machines may need
+#larger queues.
+InputQueueLen 4000
+
+
+###################################
+#           Other Optional Commands
+
+
+#MaxMsgSize: Optional command to tell wave_server about TRACEBUF2 messages
+# that could be larger than any going to tanks for this server. This
+# may happen if you have two wave_servers and TRACEBUF2 sources that
+# produce different size messages, e.g., ref2ew messages are 1064 bytes.
+MaxMsgSize 4096
+
+# Debug - optional value of the debug flag. Higher debug 
+#    levels include all debug messages from the lower levels,
+#    plus more. WARNING: Debug files can get VERY VERY LARGE.
+#
+#   While the scope of each Debug level may vary, following
+#    values are accepted:
+#
+# Debug 1 ==>  Basic user level: will periodically log 
+#    message queue watermarks and print the server thread status 
+#    table. 
+#
+# Debug 2 ==> Advanced user level: Everything from lower debug  
+#    levels plus additional information which could be used
+#    to troubleshoot installation problems.
+#
+# Debug 3 ==> Advanced programmer level: Everything from lower debug  
+#    levels plus additional information about the execution flow,
+#    and other low-level debugging information.
+#
+#
+#  NOTE: This command is optional. The absence of Debug means that 
+#        only error conditions will be logged and reported.
+#
+#Debug 1
+
+#SocketDebug Set to 1 to get SOCKET_ew debug statements
+SocketDebug 0 
+
+#PleaseContinue  Set to 1 to have wave_server continue, even if
+#  there are errors during initialization
+# PleaseContinue 1
+
+#ReCreateBadTanks Set to 1 to have bad tanks re-created from scratch.
+#ReCreateBadTanks 1
+
+#SecondsBetweenQueueErrorReports   Minimum period of time between error
+#  reports to statmgr due to the internal message queue being lapped,
+#  and thus messages being lost.  Default is 60 seconds
+#SecondsBetweenQueueErrorReports 30
+
+#MaxServerThreads  Maximum of server threads to deploy to handle client
+#  requests.  Default is 10.
+#MaxServerThreads 10
+
+#QueueReportInterval  The minimum number of seconds between
+#  reports on internal queue high and low water marks.  The default is 30.
+#QueueReportInterval 5
+
+#AbortOnSingleTankFailure  Set to 0 to have wave_server continue even
+#if there is a fatal error on a tank during normal processing.
+#if this flag is not set to 0, wave_server will die if any type of 
+#IO error occurs on any tank.  If set to 1 wave_server will not exit
+#unless there is a server wide error.
+#AbortOnSingleTankFailure 1
+
+#TruncateTanksTo1GBAndContinue  Uncomment entry to have wave_server truncate
+# any tanks that are >1GB down to 1GB in size.  1GB is the maximum save tank
+# size in wave_serverV.  This will NOT affect EXISTING TANKS, only new ones
+# listed in the config file.
+#TruncateTanksTo1GBAndContinue 
+
+# This section to deal with out-of-order data packets:
+
+#UsePacketSyncDb Uncomment entry and set to 1 to use embedded db functionality
+# to manage asychronous trace buffer packets. Currently this is either on or off
+# for all SNCLs.
+#UsePacketSyncDb 1
+
+#PacketSyncDbFile - Specifies name of database file to use. If not specified
+# and UsePacketSyncDb == 1 then the default PCKTSYNC.SL3DB is used.
+#PacketSyncDbFile "TB2PACKETS.SL3DB"
+
+#PurgePacketSyncD Uncomment and specify one of the following to control 
+# how long out of sync data is kept in the database if UsePacketSyncDb=1.
+# 1 : Purge data on startup
+# 0 : Do not purge data on startup. Obsolete data is intermittently purged
+# during the operation of wave_serverV is UsePacketSyncDb is 1.
+#PurgePacketSyncDb 1
