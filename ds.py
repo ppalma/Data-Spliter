@@ -103,6 +103,7 @@ def read_config():
 		hbox.pack_end(btnRefresh,False,False,0)			
 		vbox.pack_start(hbox, False, False, 0)
 
+SCNL = []
 def waveman2disk_init():
 	config.read(CONFIG_FILE)
         cmd = 'scp %s@%s:/usr/local/Earthworm/Run_OVC/Params/wave_serverV.d .'%(
@@ -116,7 +117,13 @@ def waveman2disk_init():
 			location = sline[5]
 			station = sline[1][0:-1]
 			comp = sline[1][-1]
+			band = sline[3]
+			zone = sline[4]
 			
+			SCNL.append('%s%s %s %s %s'%(station,comp,band,zone,location))
+			##
+			###  SCNL = ['COYE BHE CY FF']
+			##
 			if not locations.has_key(location):
 				locations[location] = {station:[comp]}	
 			else:
@@ -153,6 +160,9 @@ def waveman2disk_init():
         	tree.append_column(languages)
         	tree.set_model(treestore)
 	table.show_all()	
+
+	
+
 def on_treeviewLocations_select_cursor_row(widget):
 	print 'asdf'
 
@@ -221,7 +231,9 @@ def get_SCNL():
 	for name in locations:
 		for station in locations[name]:
 			for comp in locations[name][station]:
-				ret.append("%s%s %s%s %s %s"%(station,comp,'BH',comp,'CY',name))
+				for scnl in SCNL:
+					if scnl.split(' ')[0] == '%s%s'%(station,comp):
+						ret.append(scnl)
 	return ret
 def on_buttonExecute_clicked(widget):
 			
